@@ -6,11 +6,12 @@ import { BatteryInfo, DeviceInfo, IDCard, QRCODE } from "./types";
 const VISION_URL = process.env.VISION_URL;
 const VISION_TOKEN = process.env.VISION_TOKEN;
 
-if (!VISION_URL) throw new Error("VISION_URL is not defined");
-if (!VISION_TOKEN) throw new Error("VISION_TOKEN is not defined");
-
 async function fetchAPI(url: string, options: RequestInit) {
-  const response = await fetch(url, {
+  if (!VISION_URL) throw new Error("VISION_URL is not defined");
+
+  if (!VISION_TOKEN) throw new Error("VISION_TOKEN is not defined");
+
+  const response = await fetch(`${VISION_URL}${url}`, {
     ...options,
     headers: {
       ...options.headers,
@@ -26,7 +27,7 @@ async function fetchAPI(url: string, options: RequestInit) {
 export async function getQRCode(file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  return (await fetchAPI(`${VISION_URL}/qr-decode`, {
+  return (await fetchAPI("/qr-decode", {
     method: "POST",
     body: formData,
   })) as QRCODE | null;
@@ -35,7 +36,7 @@ export async function getQRCode(file: File) {
 export async function getIDCard(file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  const data = (await fetchAPI(`${VISION_URL}/idcard-decode`, {
+  const data = (await fetchAPI("/idcard-decode", {
     method: "POST",
     body: formData,
   })) as { [key: string]: string } | null;
@@ -56,7 +57,7 @@ export async function getIDCard(file: File) {
 export async function getDeviceInfo(file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  const data = (await fetchAPI(`${VISION_URL}/device-info-decode`, {
+  const data = (await fetchAPI("/device-info-decode", {
     method: "POST",
     body: formData,
   })) as { [key: string]: string } | null;
@@ -79,7 +80,7 @@ export async function getDeviceInfo(file: File) {
 export async function getBatteryInfo(file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  const data = (await fetchAPI(`${VISION_URL}/battery-info-decode`, {
+  const data = (await fetchAPI("/battery-info-decode", {
     method: "POST",
     body: formData,
   })) as { maximum_capacity: number } | null;

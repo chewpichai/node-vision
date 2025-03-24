@@ -11,12 +11,12 @@ require("server-only");
 const dayjs_1 = __importDefault(require("dayjs"));
 const VISION_URL = process.env.VISION_URL;
 const VISION_TOKEN = process.env.VISION_TOKEN;
-if (!VISION_URL)
-    throw new Error("VISION_URL is not defined");
-if (!VISION_TOKEN)
-    throw new Error("VISION_TOKEN is not defined");
 async function fetchAPI(url, options) {
-    const response = await fetch(url, {
+    if (!VISION_URL)
+        throw new Error("VISION_URL is not defined");
+    if (!VISION_TOKEN)
+        throw new Error("VISION_TOKEN is not defined");
+    const response = await fetch(`${VISION_URL}${url}`, {
         ...options,
         headers: {
             ...options.headers,
@@ -30,7 +30,7 @@ async function fetchAPI(url, options) {
 async function getQRCode(file) {
     const formData = new FormData();
     formData.append("file", file);
-    return (await fetchAPI(`${VISION_URL}/qr-decode`, {
+    return (await fetchAPI("/qr-decode", {
         method: "POST",
         body: formData,
     }));
@@ -38,7 +38,7 @@ async function getQRCode(file) {
 async function getIDCard(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const data = (await fetchAPI(`${VISION_URL}/idcard-decode`, {
+    const data = (await fetchAPI("/idcard-decode", {
         method: "POST",
         body: formData,
     }));
@@ -56,7 +56,7 @@ async function getIDCard(file) {
 async function getDeviceInfo(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const data = (await fetchAPI(`${VISION_URL}/device-info-decode`, {
+    const data = (await fetchAPI("/device-info-decode", {
         method: "POST",
         body: formData,
     }));
@@ -76,7 +76,7 @@ async function getDeviceInfo(file) {
 async function getBatteryInfo(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const data = (await fetchAPI(`${VISION_URL}/battery-info-decode`, {
+    const data = (await fetchAPI("/battery-info-decode", {
         method: "POST",
         body: formData,
     }));
