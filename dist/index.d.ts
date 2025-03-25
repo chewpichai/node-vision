@@ -1,4 +1,3 @@
-import "server-only";
 import { BatteryInfo, DeviceInfo, IDCard, QRCODE } from "./types";
 export declare function getQRCode(file: File): Promise<QRCODE | null>;
 export declare function getIDCard(file: File): Promise<IDCard | null>;

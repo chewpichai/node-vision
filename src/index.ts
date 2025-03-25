@@ -1,5 +1,3 @@
-import "server-only";
-
 import dayjs from "dayjs";
 import { BatteryInfo, DeviceInfo, IDCard, QRCODE } from "./types";
 

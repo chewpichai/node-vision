@@ -7,7 +7,6 @@ exports.getQRCode = getQRCode;
 exports.getIDCard = getIDCard;
 exports.getDeviceInfo = getDeviceInfo;
 exports.getBatteryInfo = getBatteryInfo;
-require("server-only");
 const dayjs_1 = __importDefault(require("dayjs"));
 const VISION_URL = process.env.VISION_URL;
 const VISION_TOKEN = process.env.VISION_TOKEN;
